@@ -1,0 +1,320 @@
+\newcommand{\lsd}[1] {\textit{#1}}
+\section{Values relevants to initialize}
+\begin{longtable}{||p{3cm}|p{10cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\end{longtable}
+
+\section{Elements relevants to observe}
+\begin{longtable}{||p{3cm}|p{10cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\end{longtable}
+
+\section{List of all elements}
+\subsection{Object \textbf{Root}}
+
+Description: 
+'Root' appears in the equation for: (Never Used).
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\end{longtable}
+
+\subsection{Object \textbf{Market}}
+
+Description: 'Market' appears in the equation for: (Never Used).
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{Init} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Initialize the model
+
+'Init' appears in the equation for: (Never Used). \\ \hline 
+\lsd{ProbFirmControl} &\textbf{Type: } Parameter
+ 
+Probability of a firm to be controlled by the government. If found evading, it has to pay a fine on sales and a lump sum as penalty.
+
+'ProbFirmControl' appears in the equation for: Evading.
+ 
+ 
+ \textbf{Initial values:} 
+ \\ \hline 
+\lsd{ProbConsumerControl} &\textbf{Type: } Parameter
+ 
+Probability for consumers to be controlled by the government. If found purchasing products from cheating firms they are subject to a fine, reducing their welfare.
+
+'ProbConsumerControl' appears in the equation for: ProbAcceptEvasion, Shopping.
+ 
+ 
+ \textbf{Initial values:} 
+ \\ \hline 
+\lsd{Shopping} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Round of purchase for each consumer. After purchasing, the government may control whether the supplier has evaded and punishes the consumer cutting setting the flag Fined=1
+
+'Shopping' appears in the equation for: AvSales, Profit. \\ \hline 
+\lsd{Statistics} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Stastics
+
+'Statistics' appears in the equation for: (Never Used). \\ \hline 
+\lsd{AvEvading} &\textbf{Type: } Parameter
+ 
+'AvEvading' appears in the equation for: Statistics. \\ \hline 
+\lsd{AvProfit} &\textbf{Type: } Parameter
+ 
+'AvProfit' appears in the equation for: Statistics. \\ \hline 
+\lsd{AvMemControlled} &\textbf{Type: } Parameter
+ 
+'AvMemControlled' appears in the equation for: Statistics. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{Demand}}
+
+Description: 'Demand' appears in the equation for: (Never Used).
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{numConsumer} &\textbf{Type: } Parameter
+ 
+'numConsumer' appears in the equation for: InitDemand. \\ \hline 
+\lsd{numcLinks} &\textbf{Type: } Parameter
+ 
+'numcLinks' appears in the equation for: InitDemand. \\ \hline 
+\lsd{InitDemand} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Create a network of consumers connected randomly to each other.
+
+Moreover, each consumer is endowed with a number of suppliers, choosing randomly, from which it will have to choose.
+
+'InitDemand' appears in the equation for: Init. \\ \hline 
+\lsd{numSuppliers} &\textbf{Type: } Parameter
+ 
+'numSuppliers' appears in the equation for: InitDemand. \\ \hline 
+\lsd{ExpPurchase} &\textbf{Type: } Parameter
+ 
+'ExpPurchase' appears in the equation for: Purchase. \\ \hline 
+\lsd{aUtility} &\textbf{Type: } Parameter
+ 
+'aUtility' appears in the equation for: Purchase. \\ \hline 
+\lsd{aProbEvasion} &\textbf{Type: } Parameter
+ 
+'aProbEvasion' appears in the equation for: ProbAcceptEvasion. \\ \hline 
+\lsd{WeightDirectExperience} &\textbf{Type: } Parameter
+ 
+(no description available) \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{Consumer}}
+
+Description: 'Consumer' appears in the equation for: Shopping, InitDemand.
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{idConsumer} &\textbf{Type: } Parameter
+ 
+'idConsumer' appears in the equation for: InitDemand. \\ \hline 
+\lsd{ProdUsed} &\textbf{Type: } Parameter
+ 
+'ProdUsed' appears in the equation for: Purchase. \\ \hline 
+\lsd{ConsumerWelfare} &\textbf{Type: } Parameter
+ 
+'ConsumerWelfare' appears in the equation for: Purchase. \\ \hline 
+\lsd{ProbAcceptEvasion} &\textbf{Type: } Variable, 1 lags 
+ 
+ 
+Probability to include suppliers evading taxes within the option set for potential purchaes.
+
+It is computed as a slow approximation to the average probability of evading from its own experience and that from other consumers.
+
+'ProbAcceptEvasion' appears in the equation for: Purchase, ProbAcceptEvasion. \\ \hline 
+\lsd{Fined} &\textbf{Type: } Parameter
+ 
+'Fined' appears in the equation for: Shopping. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{cLink}}
+
+Description: 'cLink' appears in the equation for: ProbAcceptEvasion, InitDemand.
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{idcLink} &\textbf{Type: } Parameter
+ 
+'idcLink' appears in the equation for: InitDemand. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{Supplier}}
+
+Description: 'Supplier' appears in the equation for: Purchase, InitDemand.
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{idSupplier} &\textbf{Type: } Parameter
+ 
+'idSupplier' appears in the equation for: InitDemand. \\ \hline 
+\lsd{sapp} &\textbf{Type: } Parameter
+ 
+'sapp' appears in the equation for: Purchase. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{Supply}}
+
+Description: 'Supply' appears in the equation for: (Never Used).
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{numfLinks} &\textbf{Type: } Parameter
+ 
+'numfLinks' appears in the equation for: InitSupply. \\ \hline 
+\lsd{numFirms} &\textbf{Type: } Parameter
+ 
+'numFirms' appears in the equation for: InitSupply, InitDemand. \\ \hline 
+\lsd{InitSupply} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Create a network of firms connected randomly to each other.
+
+'InitSupply' appears in the equation for: Init. \\ \hline 
+\lsd{Purchase} &\textbf{Type: } Function, 0 lags 
+ 
+
+Choose one product and assign it to the consumer, pointed to by c->
+
+The choice is probabilistic, depending on the acceptance of tax cheating firms by the consumer and on the Utility of the product offered by the sellers.
+
+The equation also register the sale of the selected firm.
+
+'Purchase' appears in the equation for: Shopping. \\ \hline 
+\lsd{BasicUtility} &\textbf{Type: } Parameter
+ 
+'BasicUtility' appears in the equation for: Utility. \\ \hline 
+\lsd{UnitTax} &\textbf{Type: } Parameter
+ 
+'UnitTax' appears in the equation for: Utility. \\ \hline 
+\lsd{UnitGainEvasion} &\textbf{Type: } Parameter
+ 
+'UnitGainEvasion' appears in the equation for: Utility, Evading, Profit. \\ \hline 
+\lsd{UnitFine} &\textbf{Type: } Parameter
+ 
+'UnitFine' appears in the equation for: Evading, Profit. \\ \hline 
+\lsd{LumpPunishment} &\textbf{Type: } Parameter
+ 
+'LumpPunishment' appears in the equation for: Evading, Profit. \\ \hline 
+\lsd{aAvSales} &\textbf{Type: } Parameter
+ 
+'aAvSales' appears in the equation for: AvSales, AvSalesEvading, AvSalesNoEvading. \\ \hline 
+\lsd{UnitProfit} &\textbf{Type: } Parameter
+ 
+'UnitProfit' appears in the equation for: Evading, Profit. \\ \hline 
+\lsd{aMemControlled} &\textbf{Type: } Parameter
+ 
+'aMemControlled' appears in the equation for: Evading. \\ \hline 
+\lsd{weightPersonalMemory} &\textbf{Type: } Parameter
+ 
+'weightPersonalMemory' appears in the equation for: Evading, AvSalesEvading, AvSalesNoEvading. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{Firm}}
+
+Description: 'Firm' appears in the equation for: Shopping, Statistics, InitSupply.
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{idFirm} &\textbf{Type: } Parameter
+ 
+'idFirm' appears in the equation for: Purchase, InitSupply, InitDemand. \\ \hline 
+\lsd{Sales} &\textbf{Type: } Parameter
+ 
+'Sales' appears in the equation for: Purchase, AvSales, AvSalesEvading, AvSalesNoEvading, Profit, Shopping. \\ \hline 
+\lsd{Evading} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Flag signaling whether the firm cheats on taxes (1) or pays (0)
+
+In case of control it is set to 0.
+
+Otherwise, it uses an estimation of the gain from paying taxes and not paying them, the discounted by the observed risk of being caught.
+
+'Evading' appears in the equation for: Purchase, Utility, AvSalesEvading, AvSalesNoEvading, Profit, Shopping, Statistics, InitSupply. \\ \hline 
+\lsd{Utility} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Utility for the consumer by choosing one product, mix of standard utility plus, in case of evasion, the difference of the unpaid tax and the extra gain for the producer.
+
+'Utility' appears in the equation for: Purchase, InitSupply. \\ \hline 
+\lsd{MemoryControlled} &\textbf{Type: } Parameter
+ 
+'MemoryControlled' appears in the equation for: Evading, Statistics. \\ \hline 
+\lsd{Punished} &\textbf{Type: } Parameter
+ 
+'Punished' appears in the equation for: Evading, Profit. \\ \hline 
+\lsd{AvSalesEvading} &\textbf{Type: } Variable, 1 lags 
+ 
+ 
+Estimate of moving average of sales when evading
+
+'AvSalesEvading' appears in the equation for: Evading, AvSalesEvading, InitSupply. \\ \hline 
+\lsd{AvSalesNoEvading} &\textbf{Type: } Variable, 1 lags 
+ 
+ 
+Estimate of moving sales when not evading
+
+'AvSalesNoEvading' appears in the equation for: Evading, AvSalesNoEvading, InitSupply. \\ \hline 
+\lsd{GainEvading} &\textbf{Type: } Parameter
+ 
+'GainEvading' appears in the equation for: Evading. \\ \hline 
+\lsd{CostEvading} &\textbf{Type: } Parameter
+ 
+'CostEvading' appears in the equation for: Evading. \\ \hline 
+\lsd{AvSales} &\textbf{Type: } Variable, 1 lags 
+ 
+ 
+Compute the moving average of sales
+
+'AvSales' appears in the equation for: Evading, AvSales, InitSupply. \\ \hline 
+\lsd{Profit} &\textbf{Type: } Variable, 0 lags 
+ 
+ 
+Profit are proportional to sale. If the firm evades taxes it also gains from a share of unpaid tax. In case of being caught it pays the fine.
+
+The fine is computed on each single sale. Additionally, a lump punishment, such as a prison term, is added to the penalty.
+
+'Profit' appears in the equation for: Statistics. \\ \hline 
+\end{longtable}
+
+\subsection{Object \textbf{fLink}}
+
+Description: 'fLink' appears in the equation for: Evading, AvSalesEvading, AvSalesNoEvading, InitSupply.
+
+
+\begin{longtable}{||p{3cm}|p{11cm}||}
+  \hline
+  \textbf{Label} & \textbf{Description} \\  \hline \endhead 
+\lsd{idfLink} &\textbf{Type: } Parameter
+ 
+'idfLink' appears in the equation for: InitSupply. \\ \hline 
+\end{longtable}
+

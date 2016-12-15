@@ -1,0 +1,10 @@
+Tax Evasion model
+v. 0.1
+
+The model represent a group of consumer that at each time choose one firm from which to purchase a product. The sellers can decide to cheat on taxes (evading) or pay lawful taxes. In the first case the share extra gain from saving on the tax with the consumer. The government controls randomly both buyers and seller, and punish those caught cheating.
+
+Both buyers and sellers do not observe the whole market, but only a subset of peers, to imitate, and of suppliers, for the consumers.
+
+This initial version assumes the sets of peers and supplies as randomly determined at the beginning and never modified.
+
+The model is highly automatize. Two variables serves only to initialize the supply and demand side model, reading the parameters to determine number individuals,  peers and suppliers and performing the necessary initializations.
