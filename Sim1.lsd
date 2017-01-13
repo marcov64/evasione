@@ -96,6 +96,12 @@ Label Root
 		Param: AvEvading
 		Param: AvProfit
 		Param: AvMemControlled
+		Param: ProbControl
+		Var: GovernmentUtility
+		Param: TotalCost
+		Param: TotalFine
+		Param: TotalControls
+		Param: CostControl
 
 	}
 
@@ -103,8 +109,8 @@ Label Root
 }
 
 
-
 DATA
+
 Object: Root C	1
 
 Object: Market C	1
@@ -112,10 +118,16 @@ Var: Init 0 n + n n
 Param: ProbFirmControl 0 n + n n	0.01
 Param: ProbConsumerControl 0 n + n n	0
 Var: Shopping 0 s + d n
-Var: Statistics 0 n + d n
+Var: Statistics 0 n + n n
 Param: AvEvading 0 s + n p	0
 Param: AvProfit 0 s + n n	0
 Param: AvMemControlled 0 s + n p	0
+Param: ProbControl 0 n + n n	0.01
+Var: GovernmentUtility 0 s + d n
+Param: TotalCost 0 s + n n	0
+Param: TotalFine 0 s + n n	0
+Param: TotalControls 0 s + n n	0
+Param: CostControl 0 n + n n	0.02
 
 Object: Demand C	1
 Param: numConsumer 0 n + n n	10000
@@ -125,11 +137,11 @@ Param: numSuppliers 0 n + n n	10
 Param: ExpPurchase 0 n + n n	1
 Param: aUtility 0 n + n n	0.9
 Param: aProbEvasion 0 n + n n	0.9
-Param: WeightDirectExperience 0 n - n n	0
+Param: WeightDirectExperience 0 n + n n	0.5
 
 Object: Consumer C	1
 Param: idConsumer 0 n + n n	0
-Param: ProdUsed 0 s + n n	0
+Param: ProdUsed 0 n + n n	0
 Param: ConsumerWelfare 0 n + n n	0
 Var: ProbAcceptEvasion 1 n + n n	1
 Param: Fined 0 n + n n	0
@@ -147,27 +159,27 @@ Param: numFirms 0 n + n n	1000
 Var: InitSupply 0 n + n n
 Func: Purchase 0 n + n n
 Param: BasicUtility 0 n + n n	1
-Param: UnitTax 0 n + n n	1
-Param: UnitGainEvasion 0 n + n n	0
+Param: UnitTax 0 n + n n	0
+Param: UnitGainEvasion 0 n + n n	1.5
 Param: UnitFine 0 n + n n	1
 Param: LumpPunishment 0 n + n n	0
 Param: aAvSales 0 n + n n	0.9
 Param: UnitProfit 0 n + n n	1
 Param: aMemControlled 0 n + n n	0.9
-Param: weightPersonalMemory 0 n - n n	0
+Param: weightPersonalMemory 0 n + n n	0.9
 
 Object: Firm C	1
 Param: idFirm 0 n + n n	0
 Param: Sales 0 s + n n	0
-Var: Evading 0 n + n n
+Var: Evading 1 n + n n	0
 Var: Utility 0 n + n n
 Param: MemoryControlled 1 s + n n	0
 Param: Punished 0 n + n n	0
-Var: AvSalesEvading 1 s + d n	10
-Var: AvSalesNoEvading 1 s + d n	10
+Var: AvSalesEvading 1 s + n n	10
+Var: AvSalesNoEvading 1 s + n n	10
 Param: GainEvading 0 n + n n	0
 Param: CostEvading 0 n + n n	0
-Var: AvSales 1 n + d n	10
+Var: AvSales 1 s + n n	10
 Var: Profit 0 s + n n
 
 Object: fLink C	1
@@ -177,7 +189,7 @@ SIM_NUM 1
 SEED 1
 MAX_STEP 10000
 EQUATION fun_evasione.cpp
-MODELREPORT report_Sim1.html
+ MODELREPORT report_Sim1.html
 
 DESCRIPTION
 
@@ -203,9 +215,7 @@ Parameter_ProbFirmControl
 Probability of a firm to be controlled by the government. If found evading, it has to pay a fine on sales and a lump sum as penalty.
 
 'ProbFirmControl' appears in the equation for: Evading.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -213,9 +223,7 @@ Parameter_ProbConsumerControl
 Probability for consumers to be controlled by the government. If found purchasing products from cheating firms they are subject to a fine, reducing their welfare.
 
 'ProbConsumerControl' appears in the equation for: ProbAcceptEvasion, Shopping.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -238,9 +246,7 @@ END_DESCRIPTION
 Parameter_AvEvading
 Global share of evading firms
 'AvEvading' appears in the equation for: Statistics.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -248,9 +254,7 @@ Parameter_AvProfit
 Global average of profits.
 
 'AvProfit' appears in the equation for: Statistics.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -258,9 +262,43 @@ Parameter_AvMemControlled
 Global average of indicator MemoryControlled, providing the expecations of firms to be controlled.
 
 'AvMemControlled' appears in the equation for: Statistics.
-
 _INIT_
 
+END_DESCRIPTION
+
+Parameter_ProbControl
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Variable_GovernmentUtility
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_TotalCost
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_TotalFine
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_TotalControls
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_CostControl
+(no description available)
+_INIT_
 
 END_DESCRIPTION
 
@@ -274,9 +312,7 @@ Parameter_numConsumer
 Number of consumers
 
 'numConsumer' appears in the equation for: InitDemand.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -284,9 +320,7 @@ Parameter_numcLinks
 Number of peers each consumer consult for information.
 
 'numcLinks' appears in the equation for: InitDemand.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -304,9 +338,7 @@ Parameter_numSuppliers
 Number  of suppliers each consumer consumer considers to buy from.
 
 'numSuppliers' appears in the equation for: InitDemand.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -314,9 +346,7 @@ Parameter_ExpPurchase
 Exponent of probability in choosing from suppliers. The higher the more likely high utility product will be chosen.
 
 'ExpPurchase' appears in the equation for: Purchase.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -324,9 +354,7 @@ Parameter_aUtility
 Speed of updating of consumer welfare, slowly tracking the utility of the latest product purchased.
 
 'aUtility' appears in the equation for: Purchase.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -334,9 +362,7 @@ Parameter_aProbEvasion
 Speed of updating of the probability for consumers to buy from evading firms, slowly tracking the same indicator from related peers and personal experience (consumer fined because buying from a tax evading firm).
 
 'aProbEvasion' appears in the equation for: ProbAcceptEvasion.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -344,9 +370,7 @@ Parameter_WeightDirectExperience
 Relevance of personal experience vs observed states in relation on accepting sales from evading firms.
 
 Used in ProbAcceptEvasion
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -443,9 +467,7 @@ Parameter_numfLinks
 Number of firms connected to each firm for collecting information.
 
 'numfLinks' appears in the equation for: InitSupply.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -453,9 +475,7 @@ Parameter_numFirms
 Number of firms.
 
 'numFirms' appears in the equation for: InitSupply, InitDemand.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -483,9 +503,7 @@ Parameter_BasicUtility
 Underlining utility of the product.
 
 'BasicUtility' appears in the equation for: Utility.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -493,9 +511,7 @@ Parameter_UnitTax
 Level of the tax that lawful firms pay for each sale.
 
 'UnitTax' appears in the equation for: Utility.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -503,9 +519,7 @@ Parameter_UnitGainEvasion
 Absolute amount of gains for the producer in case of cheating. This value is the share of UnitTax left to the producer, the remaining unpaid tax of evading is received by the consumer.
  
 'UnitGainEvasion' appears in the equation for: Utility, Evading, Profit.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -513,9 +527,7 @@ Parameter_UnitFine
 Fine paid by the producer if discovered cheating.
 
 'UnitFine' appears in the equation for: Evading, Profit.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -523,9 +535,7 @@ Parameter_LumpPunishment
 Extra cost to pay by the firm discovered cheating, independent from the level of sales.
  
 'LumpPunishment' appears in the equation for: Evading, Profit.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -533,9 +543,7 @@ Parameter_aAvSales
 Speed of change of the indicator used as moving average for the level of sales.
 
 'aAvSales' appears in the equation for: AvSales, AvSalesEvading, AvSalesNoEvading.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -543,9 +551,7 @@ Parameter_UnitProfit
 Profits generated by one sale in case taxes are regularly paid.
 
 'UnitProfit' appears in the equation for: Evading, Profit.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -553,9 +559,7 @@ Parameter_aMemControlled
 Speed of updating of the indicator used to track the expectations of being controlled by the government.
 
 'aMemControlled' appears in the equation for: Evading.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -563,9 +567,7 @@ Parameter_weightPersonalMemory
 Relevance of direct experience vs observed levels from peers concerning the expectations of being caught cheating.
 
 'weightPersonalMemory' appears in the equation for: Evading, AvSalesEvading, AvSalesNoEvading.
-
 _INIT_
-
 
 END_DESCRIPTION
 
@@ -587,9 +589,7 @@ Parameter_Sales
 Level of sales
 
 'Sales' appears in the equation for: Purchase, AvSales, AvSalesEvading, AvSalesNoEvading, Profit, Shopping.
-
 _INIT_
-
 
 END_DESCRIPTION
 

@@ -93,8 +93,51 @@ v[1]=V("UnitTax");
 v[2]=V("UnitGainEvasion");
 v[3]=V("Evading");
 
-v[4]=v[0]+v[3]*(v[1]-v[2]);
+v[4]=v[0]+v[3]*(v[2]-v[1]);
 RESULT(v[4] )
+
+
+EQUATION("ProbFirmControl")
+/*
+Comment
+*/
+WRITE("FinesCollected",0);
+WRITE("TaxDodgersCaught",0);
+RESULT(CURRENT )
+
+EQUATION("GovernmentUtility")
+/*
+Comment
+*/
+
+V("Shopping");
+
+v[0]=v[1]=v[2]=v[3]=0;
+v[11]=V("CostControl");
+v[13]=V("UnitFine");
+v[18]=V("ProbControl");
+CYCLE(cur,"Firm")
+ {
+  if(RND<v[18])
+   {
+    v[0]+=v[11];
+    v[1]++;
+    WRITES(cur,"MemoryControlled",1);
+    v[12]=VS(cur,"Evading");
+    if(v[12]==1)
+     {
+      WRITES(cur,"Punished",v[15]);
+      v[2]++;
+      v[14]=VS(cur,"Sales");
+      v[3]+=v[14]*v[13];
+     }
+   }
+ }
+
+WRITE("TotalCost",v[1]*v[11]);
+WRITE("TotalFine",v[2]*v[13]);
+WRITE("TotalControls",v[1]);
+RESULT(v[1]*(v[13]-v[11]) )
 
 
 EQUATION("Evading")
@@ -106,28 +149,23 @@ In case of control it is set to 0.
 Otherwise, it uses an estimation of the gain from paying taxes and not paying them, the discounted by the observed risk of being caught.
 */
 
-v[0]=V("ProbFirmControl");
-if(RND<v[0])
- {WRITE("MemoryControlled",1); 
-  WRITE("Punished",1);
-  END_EQUATION(0);
- }
 MULT("MemoryControlled",V("aMemControlled"));
  
-WRITE("Punished",0); 
 
 v[1]=v[2]=v[20]=v[21]=v[22]=v[23]=0;  
 CYCLE(cur, "fLink")
  {
-  v[1]+=VS(cur->hook,"MemoryControlled");
-  v[2]++;  
+  v[11]=VLS(cur->hook,"AvSales",1);
+  v[1]+=VLS(cur->hook,"Evading",1)*v[11];
+  v[2]+=v[11];  
  }
 
 v[3]=v[1]/v[2];
 
+
 v[4]=V("MemoryControlled");
 v[5]=V("weightPersonalMemory");
-
+	
 v[6]=v[5]*v[4]+(1-v[5])*v[3]; //perception of being caugth
 WRITE("MemoryControlled",v[6]);
 
@@ -135,15 +173,15 @@ v[7]=V("UnitFine");
 v[15]=V("UnitProfit");
 v[8]=V("UnitGainEvasion");
 v[9]=V("LumpPunishment");
-v[10]=VL("AvSalesEvading",1);
-v[14]=VL("AvSalesNoEvading",1);
+//v[10]=VL("AvSalesEvading",1);
+//v[14]=VL("AvSalesNoEvading",1);
 
 v[10]=v[14]=VL("AvSales",1);
-v[11]=(v[9]+v[10]*v[7])*v[6]; //expected costs of evading
+v[11]=(v[9]+v[10]*v[7]); //expected costs of evading
 v[12]=v[10]*(v[8]+v[15]) - v[11]; //net gains from evading
 
 v[16]=v[14]*v[15]; //gains from not evading
-if(v[12] > v[16])
+if(v[12]*(1-v[6]) > v[16])
  v[13]=1;
 else
  v[13]=0; 
