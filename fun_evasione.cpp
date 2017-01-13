@@ -118,14 +118,17 @@ CYCLE(cur,"Firm")
     v[12]=VS(cur,"Evading");
     if(v[12]==1)
      {//if the controlled firm is evading than ..
-      WRITES(cur,"Punished",v[15]);
+      WRITES(cur,"Punished",1);
       v[2]++;
       v[14]=VS(cur,"Sales");
       v[3]+=v[14]*v[13];
      }
    }
    else
+    {
      WRITES(cur,"Controlled",0); 
+     WRITES(cur,"Punished",0);
+    } 
  }
 
 WRITE("TotalCost",v[1]*v[11]);
@@ -135,29 +138,33 @@ WRITE("TotalCaughtEvading",v[2]);
 RESULT(v[3]-v[1]*v[11] )
 
 
-EQUATION("MemoryControlled")
+EQUATION("FearEvading")
 /*
-Element set to 1 if the firm has just undergone a gov. control. The memory fades trhough time, though can be revivied up by observing other firms being controlled.
+Element set to 1 if the firm has just undergone a gov. control. The fear fades trhough time and is influenced by linked firms behaviour.
 */
 
-v[0]=VL("MemoryControlled",1);
+if(V("Controlled")==1)
+ END_EQUATION(1);
+v[0]=VL("FearEvading",1);
+
 v[1]=V("aMemControlled");
 
-v[2]=v[0]*v[1];
+v[12]=v[0]*v[1];
 
+v[1]=v[2]=0;
 CYCLE(cur, "fLink")
  {//check whether the last time step connected firms were evading or not, weitghted by their size
   v[11]=VLS(cur->hook,"AvSales",1);
-  v[1]+=VS(cur->hook,"Controlled")*v[11];
+  v[1]+=VLS(cur->hook,"Evading",1)*v[11];
   v[2]+=v[11];  
  }
 
-v[3]=v[1]/v[2]; //share of linked firms being controlled last time 
+v[3]=v[1]/v[2]; //share of linked firms evading 
 
 
 v[5]=V("weightPersonalMemory");
 	
-v[6]=v[5]*v[2]+(1-v[5])*v[3]; //perception of prob. of being controlled, avereged between observation and personal memory
+v[6]=v[5]*v[12]+(1-v[5])*v[3]; //perception of prob. of being controlled, avereged between observation and personal memory
 
 
 RESULT(v[6] )
@@ -171,21 +178,20 @@ Flag signaling whether the firm cheats on taxes (1) or pays (0)
 Otherwise, it uses an estimation of the gain from paying taxes and not paying them, the discounted by the observed risk of being caught.
 */
 
-v[6]=V("MemoryControlled"); //Parameter set to 1 if the firm has just undergone a gov. control and 0 expecting no controls
+v[6]=V("FearEvading"); //Parameter set to 1 if the firm has just undergone a gov. control and 0 expecting no controls
 
  
 v[7]=V("UnitFine");
 v[15]=V("UnitProfit");
+v[25]=V("UnitTax");
 v[8]=V("UnitGainEvasion");
 v[9]=V("LumpPunishment");
-//v[10]=VL("AvSalesEvading",1);
-//v[14]=VL("AvSalesNoEvading",1);
 
 v[10]=v[14]=VL("AvSales",1);
 v[11]=(v[9]+v[10]*v[7]); //expected costs of evading
 v[12]=v[10]*(v[8]+v[15]) - v[11]; //net gains from evading
 
-v[16]=v[14]*v[15]; //gains from not evading
+v[16]=v[14]*(v[15]-v[25]); //gains from not evading
 if(v[12]*(1-v[6]) > v[16])
  v[13]=1;
 else
@@ -213,6 +219,7 @@ RESULT(v[3] )
 
 EQUATION("AvSalesEvading")
 /*
+OBSOLETE, not used
 Estimate of moving average of sales when evading
 */
 
@@ -240,6 +247,7 @@ RESULT(v[9])
 
 EQUATION("AvSalesNoEvading")
 /*
+OBSOLETE, not use
 Estimate of moving sales when not evading
 */
 
@@ -269,7 +277,8 @@ Profit are proportional to sale. If the firm evades taxes it also gains from a s
 
 The fine is computed on each single sale. Additionally, a lump punishment, such as a prison term, is added to the penalty.
 */
-V("Shopping");
+V("Shopping"); //ensure consumers made their choice
+V("GovernmentUtility"); //ensure government made its move
 v[0]=V("Sales");
 v[1]=V("Evading");
 v[2]=V("UnitProfit");
@@ -277,6 +286,7 @@ v[3]=V("UnitGainEvasion");
 v[5]=V("Punished");
 v[6]=V("UnitFine");
 v[7]=V("LumpPunishment");
+
 v[4]=v[0]*(v[2]+v[3]*v[1] - v[5]*v[6] ) - v[7]*v[5];
 RESULT(v[4] )
 
@@ -315,12 +325,12 @@ CYCLE(cur, "Firm")
  v[0]++;
  v[1]+=VS(cur,"Evading");
  v[2]+=VS(cur,"Profit");
- v[3]+=VS(cur,"MemoryControlled");
+ v[3]+=VS(cur,"FearEvading");
  }
 
 WRITE("AvEvading",v[1]/v[0]);
 WRITE("AvProfit",v[2]/v[0]);
-WRITE("AvMemControlled",v[3]/v[0]);
+WRITE("AvFearEvading",v[3]/v[0]);
 
 RESULT(1 )
 

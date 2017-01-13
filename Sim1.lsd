@@ -61,7 +61,7 @@ Label Root
 				Param: Sales
 				Var: Evading
 				Var: Utility
-				Param: MemoryControlled
+				Var: FearEvading
 				Param: Punished
 				Var: AvSalesEvading
 				Var: AvSalesNoEvading
@@ -69,6 +69,7 @@ Label Root
 				Param: CostEvading
 				Var: AvSales
 				Var: Profit
+				Param: Controlled
 
 			}
 
@@ -95,13 +96,14 @@ Label Root
 		Var: Statistics
 		Param: AvEvading
 		Param: AvProfit
-		Param: AvMemControlled
+		Param: AvFearEvading
 		Param: ProbControl
 		Var: GovernmentUtility
 		Param: TotalCost
 		Param: TotalFine
 		Param: TotalControls
 		Param: CostControl
+		Param: TotalCaughtEvading
 
 	}
 
@@ -121,13 +123,14 @@ Var: Shopping 0 s + d n
 Var: Statistics 0 n + n n
 Param: AvEvading 0 s + n p	0
 Param: AvProfit 0 s + n n	0
-Param: AvMemControlled 0 s + n p	0
+Param: AvFearEvading 0 s + n p	0
 Param: ProbControl 0 n + n n	0.01
 Var: GovernmentUtility 0 s + d n
 Param: TotalCost 0 s + n n	0
 Param: TotalFine 0 s + n n	0
 Param: TotalControls 0 s + n n	0
 Param: CostControl 0 n + n n	0.02
+Param: TotalCaughtEvading 0 s + n n	0
 
 Object: Demand C	1
 Param: numConsumer 0 n + n n	10000
@@ -173,7 +176,7 @@ Param: idFirm 0 n + n n	0
 Param: Sales 0 s + n n	0
 Var: Evading 1 n + n n	0
 Var: Utility 0 n + n n
-Param: MemoryControlled 1 s + n n	0
+Var: FearEvading 1 s + n n	0
 Param: Punished 0 n + n n	0
 Var: AvSalesEvading 1 s + n n	10
 Var: AvSalesNoEvading 1 s + n n	10
@@ -181,6 +184,7 @@ Param: GainEvading 0 n + n n	0
 Param: CostEvading 0 n + n n	0
 Var: AvSales 1 s + n n	10
 Var: Profit 0 s + n n
+Param: Controlled 0 n + n n	0
 
 Object: fLink C	1
 Param: idfLink 0 n + n n	0
@@ -258,7 +262,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_AvMemControlled
+Parameter_AvFearEvading
 Global average of indicator MemoryControlled, providing the expecations of firms to be controlled.
 
 'AvMemControlled' appears in the equation for: Statistics.
@@ -297,6 +301,12 @@ _INIT_
 END_DESCRIPTION
 
 Parameter_CostControl
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
+Parameter_TotalCaughtEvading
 (no description available)
 _INIT_
 
@@ -613,7 +623,7 @@ _INIT_
 
 END_DESCRIPTION
 
-Parameter_MemoryControlled
+Variable_FearEvading
 Estimation of being controlled by the government.
 
 'MemoryControlled' appears in the equation for: Evading, Statistics.
@@ -679,6 +689,12 @@ _INIT_
 
 END_DESCRIPTION
 
+Parameter_Controlled
+(no description available)
+_INIT_
+
+END_DESCRIPTION
+
 Object_fLink
 'fLink' appears in the equation for: Evading, AvSalesEvading, AvSalesNoEvading, InitSupply.
 _INIT_
@@ -697,7 +713,7 @@ END_DESCRIPTION
 DOCUOBSERVE
 AvEvading
 AvProfit
-AvMemControlled
+AvFearEvading
 Sales
 
 END_DOCUOBSERVE
