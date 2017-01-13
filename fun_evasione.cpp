@@ -97,78 +97,83 @@ v[4]=v[0]+v[3]*(v[2]-v[1]);
 RESULT(v[4] )
 
 
-EQUATION("ProbFirmControl")
-/*
-Comment
-*/
-WRITE("FinesCollected",0);
-WRITE("TaxDodgersCaught",0);
-RESULT(CURRENT )
-
 EQUATION("GovernmentUtility")
 /*
-Comment
+Utility for the government measured after trading is completed.
 */
 
-V("Shopping");
+V("Shopping"); //ensure consumers made their choices
 
 v[0]=v[1]=v[2]=v[3]=0;
 v[11]=V("CostControl");
 v[13]=V("UnitFine");
 v[18]=V("ProbControl");
 CYCLE(cur,"Firm")
- {
+ { //for all firms
   if(RND<v[18])
-   {
+   {//pick some randomly
     v[0]+=v[11];
     v[1]++;
-    WRITES(cur,"MemoryControlled",1);
+    WRITES(cur,"Controlled",1); 
     v[12]=VS(cur,"Evading");
     if(v[12]==1)
-     {
+     {//if the controlled firm is evading than ..
       WRITES(cur,"Punished",v[15]);
       v[2]++;
       v[14]=VS(cur,"Sales");
       v[3]+=v[14]*v[13];
      }
    }
+   else
+     WRITES(cur,"Controlled",0); 
  }
 
 WRITE("TotalCost",v[1]*v[11]);
-WRITE("TotalFine",v[2]*v[13]);
+WRITE("TotalFine",v[3]);
 WRITE("TotalControls",v[1]);
-RESULT(v[1]*(v[13]-v[11]) )
+WRITE("TotalCaughtEvading",v[2]);
+RESULT(v[3]-v[1]*v[11] )
+
+
+EQUATION("MemoryControlled")
+/*
+Element set to 1 if the firm has just undergone a gov. control. The memory fades trhough time, though can be revivied up by observing other firms being controlled.
+*/
+
+v[0]=VL("MemoryControlled",1);
+v[1]=V("aMemControlled");
+
+v[2]=v[0]*v[1];
+
+CYCLE(cur, "fLink")
+ {//check whether the last time step connected firms were evading or not, weitghted by their size
+  v[11]=VLS(cur->hook,"AvSales",1);
+  v[1]+=VS(cur->hook,"Controlled")*v[11];
+  v[2]+=v[11];  
+ }
+
+v[3]=v[1]/v[2]; //share of linked firms being controlled last time 
+
+
+v[5]=V("weightPersonalMemory");
+	
+v[6]=v[5]*v[2]+(1-v[5])*v[3]; //perception of prob. of being controlled, avereged between observation and personal memory
+
+
+RESULT(v[6] )
 
 
 EQUATION("Evading")
 /*
 Flag signaling whether the firm cheats on taxes (1) or pays (0)
 
-In case of control it is set to 0.
 
 Otherwise, it uses an estimation of the gain from paying taxes and not paying them, the discounted by the observed risk of being caught.
 */
 
-MULT("MemoryControlled",V("aMemControlled"));
+v[6]=V("MemoryControlled"); //Parameter set to 1 if the firm has just undergone a gov. control and 0 expecting no controls
+
  
-
-v[1]=v[2]=v[20]=v[21]=v[22]=v[23]=0;  
-CYCLE(cur, "fLink")
- {
-  v[11]=VLS(cur->hook,"AvSales",1);
-  v[1]+=VLS(cur->hook,"Evading",1)*v[11];
-  v[2]+=v[11];  
- }
-
-v[3]=v[1]/v[2];
-
-
-v[4]=V("MemoryControlled");
-v[5]=V("weightPersonalMemory");
-	
-v[6]=v[5]*v[4]+(1-v[5])*v[3]; //perception of being caugth
-WRITE("MemoryControlled",v[6]);
-
 v[7]=V("UnitFine");
 v[15]=V("UnitProfit");
 v[8]=V("UnitGainEvasion");
